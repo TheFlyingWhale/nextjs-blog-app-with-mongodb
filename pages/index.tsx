@@ -45,10 +45,15 @@ export default Home;
 export const getServerSideProps = async () => {
     // get the current environment
     let dev = process.env.NODE_ENV !== "production";
-    let { DEV_URL, PROD_URL } = process.env;
 
     // request post from api
-    let response = await fetch(`${dev ? DEV_URL : PROD_URL}/api/posts`);
+    let response = await fetch(
+        `${
+            dev
+                ? "http://localhost:3000"
+                : "https://nextjs-blog-app-with-mongodb-taupe.vercel.app"
+        }/api/posts`
+    );
     // extract the data
     let data = await response.json();
 
