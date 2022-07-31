@@ -26,7 +26,7 @@ const AddPost = () => {
             title,
             content,
             published: false,
-            createAt: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
         };
 
         // save the post

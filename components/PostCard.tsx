@@ -58,6 +58,8 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         }
     };
 
+    console.log(post.createdAt);
+
     return (
         <>
             <li>
