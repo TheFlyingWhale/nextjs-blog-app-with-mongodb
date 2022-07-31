@@ -47,6 +47,11 @@ export const getServerSideProps = async () => {
     let dev = process.env.NODE_ENV !== "production";
     let { DEV_URL, PROD_URL } = process.env;
     console.log("dev", dev);
+    if (dev) {
+        console.log("devurl", DEV_URL);
+    } else {
+        console.log("produrl", PROD_URL);
+    }
     // request post from api
     let response = await fetch(`${dev ? DEV_URL : PROD_URL}/api/posts`);
     // extract the data
