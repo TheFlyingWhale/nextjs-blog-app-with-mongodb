@@ -23,7 +23,7 @@ const handler: ReqRes = async (req, res) => {
             return updatePost(req, res);
         }
         case "DELETE": {
-            // return deletePost(req, res)
+            return deletePost(req, res);
         }
     }
 };
@@ -34,12 +34,14 @@ const getPosts: ReqRes = async (req, res) => {
     try {
         // connect to the database
         const { db } = await connectToDatabase();
+
         // fetch the posts
         const posts = await db
             .collection("posts")
             .find({})
             .sort({ published: -1 })
             .toArray();
+
         // return the posts
         return res.json({
             message: JSON.parse(JSON.stringify(posts)),
@@ -66,8 +68,10 @@ const addPost: ReqRes = async (req, res) => {
     try {
         // connect to the database
         const { db } = await connectToDatabase();
+
         // add the post
         await db.collection("posts").insertOne(JSON.parse(req.body));
+
         // return a message
         return res.json({
             message: "Post added successfully",
@@ -94,6 +98,7 @@ const updatePost: ReqRes = async (req, res) => {
     try {
         // connect to the database
         const { db } = await connectToDatabase();
+
         // update the published status of the post
         await db.collection("posts").updateOne(
             {
@@ -110,6 +115,37 @@ const updatePost: ReqRes = async (req, res) => {
     } catch (error) {
         if (error instanceof Error) {
             // return an error
+            return res.json({
+                message: error,
+                success: false,
+            });
+        } else {
+            return res.json({
+                message: "Unexpected error",
+                success: false,
+            });
+        }
+    }
+};
+
+const deletePost: ReqRes = async (req, res) => {
+    try {
+        // connect to the database
+        const { db } = await connectToDatabase();
+
+        // deleting the post
+        await db.collection("posts").deleteOne({
+            _id: new mongoDB.ObjectId(req.body),
+        });
+
+        // return a message
+        return res.json({
+            message: "Post deleted successfully",
+            success: true,
+        });
+    } catch (error) {
+        // returning an error
+        if (error instanceof Error) {
             return res.json({
                 message: error,
                 success: false,
