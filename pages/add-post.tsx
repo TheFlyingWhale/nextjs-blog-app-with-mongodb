@@ -8,6 +8,7 @@ const AddPost = () => {
     const [content, setContent] = useState("");
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const [posting, setPosting] = useState(false);
 
     const handlePost = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -15,6 +16,7 @@ const AddPost = () => {
         //reset error and message
         setError("");
         setMessage("");
+        setPosting(true);
 
         // fields check
         if (!title || !content) return setError("All fields are required");
@@ -40,10 +42,12 @@ const AddPost = () => {
             // reset the fields
             setTitle("");
             setContent("");
+            setPosting(false);
             // set the message
             return setMessage(data.message);
         } else {
             // set the error
+            setPosting(false);
             return setError(data.message);
         }
     };
@@ -92,7 +96,9 @@ const AddPost = () => {
                     </div>
 
                     <div className={styles.formItem}>
-                        <button type="submit">Add post</button>
+                        <button disabled={posting} type="submit">
+                            {posting ? "Posting..." : "Add post"}
+                        </button>
                     </div>
                 </form>
             </main>
