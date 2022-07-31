@@ -12,7 +12,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     const [deleting, setDeleting] = useState(false);
     const router = useRouter();
 
-    // Publish post
+    // publish post
     const publishPost = async (postId: string) => {
         // change publishing state
         setPublishing(true);
