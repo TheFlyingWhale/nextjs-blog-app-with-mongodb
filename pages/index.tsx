@@ -52,6 +52,8 @@ export const getServerSideProps = async () => {
     // extract the data
     let data = await response.json();
 
+    console.log("wtf");
+
     return {
         props: {
             posts: data["message"],
