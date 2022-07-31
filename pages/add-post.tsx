@@ -13,7 +13,7 @@ const AddPost = () => {
     const handlePost = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //reset error and message
+        // reset error and message
         setError("");
         setMessage("");
         setPosting(true);
