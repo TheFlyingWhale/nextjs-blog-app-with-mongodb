@@ -20,7 +20,7 @@ const handler: ReqRes = async (req, res) => {
             return addPost(req, res);
         }
         case "PUT": {
-            // return updatePost(req, res)
+            return updatePost(req, res);
         }
         case "DELETE": {
             // return deletePost(req, res)
@@ -48,12 +48,16 @@ const getPosts: ReqRes = async (req, res) => {
     } catch (error) {
         // return the error
         if (error instanceof Error) {
+            // return an error
             return res.json({
                 message: error,
                 success: false,
             });
         } else {
-            console.log("Unexpected error", error);
+            return res.json({
+                message: "Unexpected error",
+                success: false,
+            });
         }
     }
 };
@@ -72,12 +76,49 @@ const addPost: ReqRes = async (req, res) => {
     } catch (error) {
         // return the error
         if (error instanceof Error) {
+            // return an error
             return res.json({
                 message: error,
                 success: false,
             });
         } else {
-            console.log("Unexpected error", error);
+            return res.json({
+                message: "Unexpected error",
+                success: false,
+            });
+        }
+    }
+};
+
+const updatePost: ReqRes = async (req, res) => {
+    try {
+        // connect to the database
+        const { db } = await connectToDatabase();
+        // update the published status of the post
+        await db.collection("posts").updateOne(
+            {
+                _id: new mongoDB.ObjectId(req.body),
+            },
+            { $set: { published: true } }
+        );
+
+        // return a message
+        return res.json({
+            message: "Post updated successfully",
+            success: true,
+        });
+    } catch (error) {
+        if (error instanceof Error) {
+            // return an error
+            return res.json({
+                message: error,
+                success: false,
+            });
+        } else {
+            return res.json({
+                message: "Unexpected error",
+                success: false,
+            });
         }
     }
 };
